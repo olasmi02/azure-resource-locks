@@ -24,12 +24,12 @@ $nsgResult = az network nsg create --resource-group $rgName --name $nsgName --lo
 Write-Host "Creating Storage Account: $saName..." -ForegroundColor Cyan
 $saResult = az storage account create --name $saName --resource-group $rgName --location $location --sku Standard_LRS --kind StorageV2 | ConvertFrom-Json
 
-Write-Host "Attempting to create Virtual Machine: $vmName (Standard_B1s)..." -ForegroundColor Cyan
+Write-Host "Attempting to create Virtual Machine: $vmName (Standard_D2s_v5)..." -ForegroundColor Cyan
 $vmDeployed = $false
 try {
     # Run az vm create. Redirecting error stream or letting it throw to catch block.
     # Note: az CLI outputs errors to stderr, which PowerShell treats as exceptions or standard error strings depending on configuration.
-    $vmOutput = az vm create --resource-group $rgName --name $vmName --image Ubuntu2204 --size Standard_B1s --admin-username azureuser --generate-ssh-keys --location $location 2>&1
+    $vmOutput = az vm create --resource-group $rgName --name $vmName --image Ubuntu2204 --size Standard_D2s_v5 --admin-username azureuser --generate-ssh-keys --location $location 2>&1
     
     if ($LASTEXITCODE -eq 0) {
         Write-Host "Virtual Machine deployed successfully." -ForegroundColor Green

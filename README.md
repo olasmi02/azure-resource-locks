@@ -191,15 +191,15 @@ Below is an Azure Policy definition that enforces a `CanNotDelete` lock on any r
 
 ## 6. Project Scripts
 
-The scripts used in this project are located in the [scripts](file:///C:/Users/duduy/OneDrive/Documents/AzureResourceLocksMiniProject/scripts) directory:
-* **Infrastructure Provisioning**: [deploy-infra.ps1](file:///C:/Users/duduy/OneDrive/Documents/AzureResourceLocksMiniProject/scripts/deploy-infra.ps1)
-* **Resource Lock Management**: [manage-locks.ps1](file:///C:/Users/duduy/OneDrive/Documents/AzureResourceLocksMiniProject/scripts/manage-locks.ps1)
-* **Infrastructure Config (JSON)**: [infra-config.json](file:///C:/Users/duduy/OneDrive/Documents/AzureResourceLocksMiniProject/scripts/infra-config.json)
+The scripts used in this project are located in the [scripts](scripts) directory:
+* **Infrastructure Provisioning**: [deploy-infra.ps1](scripts/deploy-infra.ps1)
+* **Resource Lock Management**: [manage-locks.ps1](scripts/manage-locks.ps1)
+* **Infrastructure Config (JSON)**: [infra-config.json](scripts/infra-config.json)
 
 ---
 
 ## 7. Submission Screenshots
-The screenshots demonstrating the locks in the Azure portal should be saved in the [screenshots](file:///C:/Users/duduy/OneDrive/Documents/AzureResourceLocksMiniProject/screenshots) directory as:
+The screenshots demonstrating the locks in the Azure portal should be saved in the [screenshots](screenshots) directory as:
 1. `rg_lock_screenshot.png` (Resource Group level lock)
 2. `storage_account_lock_screenshot.png` (Storage Account lock + inherited lock)
 3. `nsg_lock_screenshot.png` (NSG ReadOnly lock + inherited lock)
