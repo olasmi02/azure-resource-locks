@@ -1,7 +1,7 @@
 # deploy-infra.ps1
 # Script to provision the infrastructure for Azure Resource Lock Learning Program
 
-$subscriptionId = "9335a9cd-ae74-439b-94b3-d965ca478c53"
+$subscriptionId = "<subscription-id>"
 $rgName = "rg-locks-learning-prod"
 $location = "westeurope"
 $nsgName = "nsg-learning-prod"
