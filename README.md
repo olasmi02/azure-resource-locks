@@ -9,7 +9,7 @@ This repository contains the report, deployment scripts, and configuration files
 The objective of this assignment is to understand and verify the behavior of Azure Resource Locks (`CanNotDelete` and `ReadOnly`) across different resource tiers, analyze how locks interact with Azure Role-Based Access Control (RBAC), and explore lock automation.
 
 ### Resource Inventory
-The following resources were provisioned in the **West Europe** region under the subscription `Azure subscription 1` (ID: `9335a9cd-ae74-439b-94b3-d965ca478c53`):
+The following resources were provisioned in the **West Europe** region under the subscription `Azure subscription 1` (ID: `<subscription-id>`):
 * **Resource Group**: `rg-locks-learning-prod`
 * **Storage Account**: `salearningprod899756` (Standard LRS, StorageV2)
 * **Network Security Group**: `nsg-learning-prod`
@@ -45,7 +45,7 @@ We performed testing using the Azure CLI (`az`) logged in as the **Subscription 
   ```
   **Result**: **Blocked**. Azure returned the following error:
   ```json
-  ERROR: (ScopeLocked) The scope '/subscriptions/9335a9cd-ae74-439b-94b3-d965ca478c53/resourceGroups/rg-locks-learning-prod/providers/Microsoft.Storage/storageAccounts/salearningprod899756' cannot perform delete operation because following scope(s) are locked: '/subscriptions/9335a9cd-ae74-439b-94b3-d965ca478c53/resourcegroups/rg-locks-learning-prod/providers/Microsoft.Storage/storageAccounts/salearningprod899756'. Please remove the lock and try again.
+  ERROR: (ScopeLocked) The scope '/subscriptions/<subscription-id>/resourceGroups/rg-locks-learning-prod/providers/Microsoft.Storage/storageAccounts/salearningprod899756' cannot perform delete operation because following scope(s) are locked: '/subscriptions/<subscription-id>/resourcegroups/rg-locks-learning-prod/providers/Microsoft.Storage/storageAccounts/salearningprod899756'. Please remove the lock and try again.
   ```
 
 ---
@@ -57,7 +57,7 @@ We performed testing using the Azure CLI (`az`) logged in as the **Subscription 
   ```
   **Result**: **Blocked**. Azure returned a `ScopeLocked` write failure:
   ```json
-  ERROR: (ScopeLocked) The scope '/subscriptions/9335a9cd-ae74-439b-94b3-d965ca478c53/resourceGroups/rg-locks-learning-prod/providers/Microsoft.Network/networkSecurityGroups/nsg-learning-prod/securityRules/AllowHTTP' cannot perform write operation because following scope(s) are locked: '/subscriptions/9335a9cd-ae74-439b-94b3-d965ca478c53/resourcegroups/rg-locks-learning-prod/providers/Microsoft.Network/networkSecurityGroups/nsg-learning-prod'. Please remove the lock and try again.
+  ERROR: (ScopeLocked) The scope '/subscriptions/<subscription-id>/resourceGroups/rg-locks-learning-prod/providers/Microsoft.Network/networkSecurityGroups/nsg-learning-prod/securityRules/AllowHTTP' cannot perform write operation because following scope(s) are locked: '/subscriptions/<subscription-id>/resourcegroups/rg-locks-learning-prod/providers/Microsoft.Network/networkSecurityGroups/nsg-learning-prod'. Please remove the lock and try again.
   ```
 
 * **Deletion Test**: We attempted to delete the NSG:
@@ -66,7 +66,7 @@ We performed testing using the Azure CLI (`az`) logged in as the **Subscription 
   ```
   **Result**: **Blocked**. Azure returned the following error:
   ```json
-  ERROR: (ScopeLocked) The scope '/subscriptions/9335a9cd-ae74-439b-94b3-d965ca478c53/resourceGroups/rg-locks-learning-prod/providers/Microsoft.Network/networkSecurityGroups/nsg-learning-prod' cannot perform delete operation because following scope(s) are locked: '/subscriptions/9335a9cd-ae74-439b-94b3-d965ca478c53/resourcegroups/rg-locks-learning-prod/providers/Microsoft.Network/networkSecurityGroups/nsg-learning-prod'. Please remove the lock and try again.
+  ERROR: (ScopeLocked) The scope '/subscriptions/<subscription-id>/resourceGroups/rg-locks-learning-prod/providers/Microsoft.Network/networkSecurityGroups/nsg-learning-prod' cannot perform delete operation because following scope(s) are locked: '/subscriptions/<subscription-id>/resourcegroups/rg-locks-learning-prod/providers/Microsoft.Network/networkSecurityGroups/nsg-learning-prod'. Please remove the lock and try again.
   ```
 
 ---
@@ -79,7 +79,7 @@ We removed the resource-specific locks and applied a `CanNotDelete` lock at the 
   ```
   **Result**: **Blocked**. The delete request failed, and Azure pointed directly to the parent Resource Group lock:
   ```json
-  ERROR: (ScopeLocked) The scope '/subscriptions/9335a9cd-ae74-439b-94b3-d965ca478c53/resourceGroups/rg-locks-learning-prod/providers/Microsoft.Storage/storageAccounts/salearningprod899756' cannot perform delete operation because following scope(s) are locked: '/subscriptions/9335a9cd-ae74-439b-94b3-d965ca478c53/resourceGroups/rg-locks-learning-prod'. Please remove the lock and try again.
+  ERROR: (ScopeLocked) The scope '/subscriptions/<subscription-id>/resourceGroups/rg-locks-learning-prod/providers/Microsoft.Storage/storageAccounts/salearningprod899756' cannot perform delete operation because following scope(s) are locked: '/subscriptions/<subscription-id>/resourceGroups/rg-locks-learning-prod'. Please remove the lock and try again.
   ```
   **Observation**: This confirms that locks are inherited by all child resources from their parent resource group scope.
 
@@ -92,7 +92,7 @@ We removed the resource-specific locks and applied a `CanNotDelete` lock at the 
   ```
   **Result**: **Blocked**. Azure prevents deletion of a container group if it or any resources inside it are locked:
   ```json
-  ERROR: (ScopeLocked) The scope '/subscriptions/9335a9cd-ae74-439b-94b3-d965ca478c53/resourcegroups/rg-locks-learning-prod' cannot perform delete operation because following scope(s) are locked: '/subscriptions/9335a9cd-ae74-439b-94b3-d965ca478c53/resourceGroups/rg-locks-learning-prod'. Please remove the lock and try again.
+  ERROR: (ScopeLocked) The scope '/subscriptions/<subscription-id>/resourcegroups/rg-locks-learning-prod' cannot perform delete operation because following scope(s) are locked: '/subscriptions/<subscription-id>/resourceGroups/rg-locks-learning-prod'. Please remove the lock and try again.
   ```
   **Observation**: This prevents accidental cascading deletion of an entire environment.
 
